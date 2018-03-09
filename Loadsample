@@ -1,0 +1,4 @@
+% to load data
+
+deadData=importdata('death_rate.txt',' ');
+save('deathData.mat','deadData');
