@@ -10,13 +10,10 @@ num_train=45;
 train_data = deadData(1:rows-num_train,:);
 test_data = deadData(rows-num_train+1:rows,:);
 
-%feat_delete = [ 1 7] ;
-feat_delete = [ 10 7 5 15] ;
 % Process data
 feature_col = 17;
-
-[train_data_norm, train_feature] = process_data(train_data, feature_col, feat_delete);
-[test_data_norm, test_feature] = process_data(test_data, feature_col, feat_delete);
+[train_data_norm, train_feature] = process_data(train_data, feature_col);
+[test_data_norm, test_feature] = process_data(test_data, feature_col);
 
 
 %
@@ -28,11 +25,7 @@ gamma_g=0.0001; % step for gradient algorithm
 eps_s=0.00001; % stopping criterion for steepest descent algorithm
 M=10000; % maximum number of optimization steps
 index=[17 5];
-
-if isempty(feat_delete)~= 1
-    index= index - size(feat_delete,2);
-end
-
+%
 for ind=1:2
     F0=index(ind);
     y_train=train_data_norm(:,F0);       % measured data on feature F0
@@ -85,29 +78,21 @@ legend('training 17','testing 17','training 5','testing 5');
 title(' msv of error F0=5,7');
 % Comment: different w lead to similar perfromance: there are multiple solutions
 
-%
-death= 17;
-feat_compare = [12 9]; 
-if isempty(feat_delete)~= 1
-    death= death - size(feat_delete,2);
-    feat_compare = feat_compare - size(feat_delete,2);
-end
-
 figure
-plot(train_data_norm(:,feat_compare(1)),train_data_norm(:,death),'.');
+plot(train_data_norm(:,12),train_data_norm(:,17),'.');
 grid on
-xlabel('feature 12');
+xlabel('feature 22');
 ylabel('feature 17');
 
 figure
-plot(train_data_norm(:,feat_compare(2)),train_data_norm(:,death),'.');
+plot(train_data_norm(:,9),train_data_norm(:,7),'.');
 grid on
 xlabel('feature 9');
 ylabel('feature 17');
 % Comment: not always the relationship among the features is linear
 
 % correlation between feature 7 and the other features
-corr7=corr(train_data_norm(:,death),train_data_norm);
+corr7=corr(train_data_norm(:,17),train_data_norm);
 figure
 plot(corr7)
 grid on
