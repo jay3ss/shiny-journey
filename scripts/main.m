@@ -6,18 +6,33 @@ z = deadData;    % data matrix
 [rows, cols] = size(z);            % number of rows and columns
 
 % Separate training and test data
-num_train=45;
-train_data = deadData(1:rows-num_train,:);
-test_data = deadData(rows-num_train+1:rows,:);
+num_train = 45;
+train_data = deadData(1:num_train,:);
+test_data = deadData(num_train+1:rows,:);
 
-%feat_delete = [ 1 7] ;
-% feat_delete = [ 10 7 5 15] ;
-feat_delete = [];
-% Process data
+% Normalize the data 
+train_data_norm = normalize(train_data);
+test_data_norm = normalize(test_data);
+
+% Find correlation
+RX_train = train_data_norm'*train_data_norm/rows;
+
+% Extract feature
 feature_col = 17;
+y_train = train_data_norm(:, feature_col);
+y_test = test_data_norm(:, feature_col);
 
-[train_data_norm, train_feature] = process_data(train_data, feature_col, feat_delete);
-[test_data_norm, test_feature] = process_data(test_data, feature_col, feat_delete);
+% Find eignvectors
+[U, lambdas] = eig(RX_train);
+
+% Transform data using eigenvectors as the new basis
+z_train = train_data_norm*U;
+z_test = test_data_norm*U;
+
+% Remove feature from data
+z_train(:, feature_col) = [];
+z_test(:, feature_col) = [];
+
 
 
 %
