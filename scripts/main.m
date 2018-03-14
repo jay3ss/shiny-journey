@@ -1,14 +1,24 @@
 close all
 clear all
 
-load('deathData.mat')
+load(fullfile('..', 'data', 'deathData.mat'));
 z = deadData;    % data matrix
 [rows, cols] = size(z);            % number of rows and columns
 
 % Separate training and test data
 num_train=45;
-train_data = deadData(1:rows-num_train,:);
-test_data = deadData(rows-num_train+1:rows,:);
+train_data = deadData(1:num_train,:);
+test_data = deadData(num_train+1:rows,:);
+
+% Normalize the data
+train_data_norm = normalize(train_data);
+test_data_norm = normalize(test_data);
+
+% Find correlation
+RX_train = train_data_norm'*train_data_norm/rows;
+
+% Find eigenvectors
+[U, lambdas] = eig(RX_train);
 
 % Process data
 feature_col = 17;
