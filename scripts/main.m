@@ -30,8 +30,25 @@ z_train = train_data_norm*U;
 z_test = test_data_norm*U;
 
 % Remove feature from data
-z_train(:, feature_col) = [];
-z_test(:, feature_col) = [];
+zx_train = z_train;
+zx_train(:, feature_col) = [];
+
+zx_test = z_test;
+zx_test(:, feature_col) = [];
+
+% Find correlation between desired feature and others
+correlation = corr(y_train, z_train);
+auto_corr = corr(z_train);
+
+% Plot
+figure
+plot(correlation)
+grid on
+
+figure
+mesh(auto_corr);
+grid on
+title('correlation matrix');
 
 
 
