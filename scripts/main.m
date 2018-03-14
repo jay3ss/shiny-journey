@@ -28,10 +28,10 @@ index=[7 5];
 %
 for ind=1:2
     F0=index(ind);
-    y_train=data_train_norm(:,F0);       % measured data on feature F0
-    y_test=data_test_norm(:,F0);         % measured data on feature F0
-    X_train=data_train_norm; X_train(:,F0)=[]; % feature F0 is eliminated
-    X_test=data_test_norm; X_test(:,F0)=[];    % feature F0 is eliminated
+    y_train=train_data_norm(:,F0);       % measured data on feature F0
+    y_test=test_data_norm(:,F0);         % measured data on feature F0
+    X_train=train_data_norm; X_train(:,F0)=[]; % feature F0 is eliminated
+    X_test=test_data_norm; X_test(:,F0)=[];    % feature F0 is eliminated
     % MMSE estimate--------------------------------------------------------
     w_train=(X_train'*X_train)\(X_train')*y_train; % MMSE weigths for training
     w_mmse_train=w_train;
@@ -79,20 +79,20 @@ title(' msv of error F0=5,7');
 % Comment: different w lead to similar perfromance: there are multiple solutions
 
 figure
-plot(data_train_norm(:,22),data_train_norm(:,7),'.');
+plot(train_data_norm(:,22),train_data_norm(:,7),'.');
 grid on
 xlabel('feature 22');
 ylabel('feature 7');
 
 figure
-plot(data_train_norm(:,9),data_train_norm(:,7),'.');
+plot(train_data_norm(:,9),train_data_norm(:,7),'.');
 grid on
 xlabel('feature 9');
 ylabel('feature 7');
 % Comment: not always the relationship among the features is linear
 
 % correlation between feature 7 and the other features
-corr7=corr(data_train_norm(:,7),data_train_norm);
+corr7=corr(train_data_norm(:,7),train_data_norm);
 figure
 plot(corr7)
 grid on
@@ -100,7 +100,7 @@ grid on
 % the existence of multiple solution is due to correlation among features
 
 % autocorrelation matrix
-corr_mat=corr(data_train_norm)
+corr_mat=corr(train_data_norm)
 
 figure
 mesh(corr_mat)
@@ -108,4 +108,4 @@ grid on
 title('correlation matrix');
 
 % PCA: Principal Component Analysis
-[corr_mat] = pca_fun(F0,data_train_norm,data_test_norm);
+[corr_mat] = pca_fun(F0,train_data_norm,test_data_norm);
