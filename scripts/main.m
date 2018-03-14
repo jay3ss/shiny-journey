@@ -11,7 +11,8 @@ train_data = deadData(1:rows-num_train,:);
 test_data = deadData(rows-num_train+1:rows,:);
 
 %feat_delete = [ 1 7] ;
-feat_delete = [ 10 7 5 15] ;
+% feat_delete = [ 10 7 5 15] ;
+feat_delete = [];
 % Process data
 feature_col = 17;
 
